@@ -1,0 +1,241 @@
+.adminContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.sectionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.sectionContainer {
+  background: #000000;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.submitButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+
+
+/* Agregar al final del archivo */
+.errorAlert {
+  background-color: #ffebee;
+  color: #b71c1c;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  border: 1px solid #ffcdd2;
+}
+
+.spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 5px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Reset Button Styles */
+.resetButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.resetButton:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.resetModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.resetModal {
+  background: rgb(2, 27, 54);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+}
+
+.resetModalTitle {
+  font-size: 1.5rem;
+  color: #ff293e;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.resetModalMessage {
+  margin-bottom: 25px;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+.resetModalMessage ul {
+  margin: 10px 0 15px 20px;
+}
+
+.resetModalMessage li {
+  margin-bottom: 8px;
+}
+
+.resetModalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.resetCancelButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.resetCancelButton:hover {
+  background-color: #5a6268;
+}
+
+.resetConfirmButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.resetConfirmButton:not(:disabled):hover {
+  background-color: #bd2130;
+  transform: translateY(-2px);
+}
+
+.resetConfirmButton:disabled {
+  background-color: #e4606d;
+  cursor: not-allowed;
+}
+
+.resetStatusContainer {
+  padding: 12px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.resetLoading {
+  background-color: #e9ecef;
+  color: #495057;
+  display: flex;
+  align-items: center;
+}
+
+.resetSuccess {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.resetError {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.resetStatusIcon {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+/* Animación para el spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.resetSpinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+}
