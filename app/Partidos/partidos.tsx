@@ -1,125 +1,253 @@
 import { useState, useEffect } from 'react';
 import styles from './partidos.module.css';
 
+/* ================= NORMALIZACIÓN ================= */
+const normalizeCountry = (name: string) =>
+  name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+
+/* ================= TIPOS ================= */
 type Partido = {
-    id: string;
-    jornada: number;
-    local: string;
-    visitante: string;
-    fecha: string;
-    resultado: string | null;
-    status: 'pendiente' | 'jugando' | 'finalizado' | 'cancelado';
+  id: string;
+  jornada: number;
+  local: string;
+  visitante: string;
+  fecha: string;
+  resultado: string | null;
+  status: 'pendiente' | 'jugando' | 'finalizado' | 'cancelado';
 };
 
 type PartidosProps = {
-    partidos: Partido[];
-    isAdmin?: boolean;
+  partidos: Partido[];
+  isAdmin?: boolean;
 };
 
-export default function Partidos({ partidos, isAdmin = false }: PartidosProps) {
-  const [jornadaSeleccionada, setJornadaSeleccionada] = useState<number | 'todas'>('todas');
+/* ================= MAPEO PAÍS → ISO ================= */
+const rawCountryCodeMap: Record<string, string> = {
+  // CONCACAF
+  'mexico': 'mx',
+  'canada': 'ca',
+  'estados unidos': 'us',
+  'usa': 'us',
+  'costa rica': 'cr',
+  'panama': 'pa',
+  'jamaica': 'jm',
+  'honduras': 'hn',
+  'curazao': 'cw',
+  'haiti': 'ht',
+  'cabo verde': 'cv',
+
+  // CONMEBOL
+  'argentina': 'ar',
+  'brasil': 'br',
+  'uruguay': 'uy',
+  'colombia': 'co',
+  'chile': 'cl',
+  'peru': 'pe',
+  'ecuador': 'ec',
+  'paraguay': 'py',
+  'bolivia': 'bo',
+  'venezuela': 've',
+
+  // UEFA
+  'alemania': 'de',
+  'francia': 'fr',
+  'espana': 'es',
+  'italia': 'it',
+  'inglaterra': 'gb-eng',
+  'escocia': 'gb-sct',
+  'gales': 'gb-wls',
+  'portugal': 'pt',
+  'belgica': 'be',
+  'paises bajos': 'nl',
+  'holanda': 'nl',
+  'suiza': 'ch',
+  'austria': 'at',
+  'croacia': 'hr',
+  'dinamarca': 'dk',
+  'suecia': 'se',
+  'noruega': 'no',
+  'polonia': 'pl',
+  'serbia': 'rs',
+  'ucrania': 'ua',
+  'turquia': 'tr',
+  'rumania': 'ro',
+  'republica checa': 'cz',
+  'chequia': 'cz',
+  'hungria': 'hu',
+  'grecia': 'gr',
+  'irlanda': 'ie',
+  'eslovaquia': 'sk',
+  'eslovenia': 'si',
+  'finlandia': 'fi',
+  'islandia': 'is',
+
+  // AFC
+  'japon': 'jp',
+  'corea del sur': 'kr',
+  'corea': 'kr',
+  'china': 'cn',
+  'iran': 'ir',
+  'irak': 'iq',
+  'qatar': 'qa',
+  'arabia saudita': 'sa',
+  'australia': 'au',
+  'uzbekistan': 'uz',
+  'emiratos arabes unidos': 'ae',
+  'oman': 'om',
+
+  // CAF
+  'marruecos': 'ma',
+  'senegal': 'sn',
+  'nigeria': 'ng',
+  'camerun': 'cm',
+  'ghana': 'gh',
+  'tunez': 'tn',
+  'egipto': 'eg',
+  'argelia': 'dz',
+  'costa de marfil': 'ci',
+  'mali': 'ml',
+  'sudafrica': 'za',
+  'jordania': 'jo',
+
+  // OFC
+  'nueva zelanda': 'nz',
+};
+
+/* Normalizamos TODAS las keys del mapa */
+const countryCodeMap: Record<string, string> = {};
+Object.entries(rawCountryCodeMap).forEach(([key, value]) => {
+  countryCodeMap[normalizeCountry(key)] = value;
+});
+
+const getFlagUrl = (country: string) => {
+  const key = normalizeCountry(country);
+  const code = countryCodeMap[key];
+  return code ? `https://flagcdn.com/w40/${code}.png` : null;
+};
+
+/* ================= COMPONENTE ================= */
+export default function Partidos({ partidos }: PartidosProps) {
+  const [jornadaSeleccionada, setJornadaSeleccionada] =
+    useState<number | 'todas'>('todas');
   const [jornadasDisponibles, setJornadasDisponibles] = useState<number[]>([]);
-  
-  // Obtener jornadas únicas al cargar los partidos
+
   useEffect(() => {
-    if (partidos && partidos.length > 0) {
-      const jornadas = [...new Set(partidos.map(p => p.jornada))].sort((a, b) => a - b);
+    if (partidos.length > 0) {
+      const jornadas = [...new Set(partidos.map(p => p.jornada))].sort(
+        (a, b) => a - b
+      );
       setJornadasDisponibles(jornadas);
-      
-      
     }
   }, [partidos]);
 
-  const partidosFiltrados = jornadaSeleccionada === 'todas' 
-    ? partidos 
-    : partidos.filter(p => p.jornada === jornadaSeleccionada);
+  const partidosFiltrados =
+    jornadaSeleccionada === 'todas'
+      ? partidos
+      : partidos.filter(p => p.jornada === jornadaSeleccionada);
 
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'jugando': return styles.playing;
-      case 'finalizado': return styles.finished;
-      case 'cancelado': return styles.cancelled;
-      default: return styles.pending;
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch(status) {
-      case 'jugando': return <i className="bi bi-play-circle-fill"></i>;
-      case 'finalizado': return <i className="bi bi-check-circle-fill"></i>;
-      case 'cancelado': return <i className="bi bi-x-circle-fill"></i>;
-      default: return <i className="bi bi-clock"></i>;
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'finalizado':
+        return styles.finished;
+      case 'jugando':
+        return styles.playing;
+      case 'cancelado':
+        return styles.cancelled;
+      default:
+        return styles.pending;
     }
   };
 
   if (!partidos || partidos.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <i className="bi bi-calendar-x"></i>
         <h3>No hay partidos programados</h3>
-        <p>Actualmente no hay partidos disponibles para mostrar</p>
       </div>
     );
   }
 
   return (
     <div className={styles.mainContainer}>
-      {/* Selector de jornada */}
       <div className={styles.jornadaSelector}>
-        <label htmlFor="jornadaSelect" className={styles.jornadaLabel}>
-          Seleccionar Jornada:
-        </label>
-        <select 
-          id="jornadaSelect"
-          className={styles.jornadaSelect}
+        <label>Jornada:</label>
+        <select
           value={jornadaSeleccionada}
-          onChange={(e) => setJornadaSeleccionada(
-            e.target.value === 'todas' ? 'todas' : parseInt(e.target.value)
-          )}
+          onChange={e =>
+            setJornadaSeleccionada(
+              e.target.value === 'todas'
+                ? 'todas'
+                : Number(e.target.value)
+            )
+          }
         >
-          <option value="todas">Todas las jornadas</option>
-          {jornadasDisponibles.map(jornada => (
-            <option key={jornada} value={jornada}>
-              Jornada {jornada}
+          <option value="todas">Todas</option>
+          {jornadasDisponibles.map(j => (
+            <option key={j} value={j}>
+              Jornada {j}
             </option>
           ))}
         </select>
-      </div><br />
+      </div>
 
-      
+      <div className={styles.tableWrapper}>
+        <table className={styles.partidosTable}>
+          <thead>
+            <tr>
+              <th>Jornada</th>
+              <th>Local</th>
+              <th>Resultado</th>
+              <th>Visitante</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {partidosFiltrados.map(partido => (
+              <tr key={partido.id}>
+                <td className={styles.jornadaCol}>{partido.jornada}</td>
 
-      {/* Lista de partidos */}
-      <div className={styles.partidosGrid}>
-        {partidosFiltrados.map((partido) => (
-          <div key={isAdmin ? partido.id : `${partido.jornada}-${partido.local}-${partido.visitante}`} 
-               className={styles.partidoCard}>
-            
-            <div className={styles.partidoHeader}>
-              <span className={styles.jornadaBadge}>
-                Jornada {partido.jornada}
-              </span>
-              <span className={`${styles.statusBadge} ${getStatusColor(partido.status)}`}>
-                {getStatusIcon(partido.status)} {partido.status}
-              </span>
-            </div>
-            
-            <div className={styles.equiposContainer}>
-              <div className={styles.equiposContainer}>
-              <div className={styles.teamName}>{partido.local}</div>
-              <span className={styles.vs}>ㅤvsㅤ</span>
-              <div className={styles.teamName}>{partido.visitante}</div>
-              </div>
- 
-            </div>
+                <td className={styles.teamCell}>
+                  {getFlagUrl(partido.local) && (
+                    <img
+                      src={getFlagUrl(partido.local)!}
+                      alt={partido.local}
+                      className={styles.flag}
+                    />
+                  )}
+                  <span>{partido.local}</span>
+                </td>
 
-              {partido.resultado && (
-                  <span className={styles.resultado}>
-                    {partido.resultado}
+                <td className={styles.resultadoCol}>
+                  {partido.resultado ?? '—'}
+                </td>
+
+                <td className={styles.teamCell}>
+                  {getFlagUrl(partido.visitante) && (
+                    <img
+                      src={getFlagUrl(partido.visitante)!}
+                      alt={partido.visitante}
+                      className={styles.flag}
+                    />
+                  )}
+                  <span>{partido.visitante}</span>
+                </td>
+
+                <td>
+                  <span
+                    className={`${styles.statusBadge} ${getStatusClass(
+                      partido.status
+                    )}`}
+                  >
+                    {partido.status}
                   </span>
-                )}
-
-          </div>
-        ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
