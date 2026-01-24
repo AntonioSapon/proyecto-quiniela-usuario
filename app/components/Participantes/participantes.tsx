@@ -34,17 +34,13 @@ export default function Participantes({ participantes }: ParticipantesProps) {
     
     <div className="d-flex justify-content-center"> 
       <div className={` ${styles.cardHeader}`}>
-        <br />
         <h2 className="mb-0 text-white fw-bold"> 
           <i className="bi bi-trophy me-3 text-warning "> </i>
-           Clasificación General  
+          ㅤClasificación General  
         </h2>
-        
-        
-        
       </div>
       
-      <div className="card-body p-0">
+      <div className={styles.tableWrapper}>
         <div className="table-responsive">
           <table className={`table align-middle mb-0 ${styles.table}`}>
             <thead>
@@ -126,19 +122,13 @@ export default function Participantes({ participantes }: ParticipantesProps) {
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
           <div className="mb-2 mb-md-0">
             <small className="text-light">
-              <i className="bi bi-info-circle me-2 text-warning"></i>
-              <span className="d-block d-md-inline"> Aciertos exactos: <span className="fw-bold">5 pts </span></span> 
-              <span className="d-none d-md-inline mx-2">|</span> 
-              <span className="d-block d-md-inline"> Ganador/Empate: <span className="fw-bold">3 pts</span></span>
+              <i className="bi bi-info-circle me-2 text-warning">ㅤ</i>
+              <span className="d-block d-md-inline"> Aciertos exactos: <span className="fw-bold">5 Pts </span></span> 
+              <span className="d-none d-md-inline mx-2">ㅤ|ㅤ</span> 
+              <span className="d-block d-md-inline"> Ganador / Empate: <span className="fw-bold">3 Pts</span></span>
             </small>
           </div>
           <div>
-            {/*  // No necesario por el momento
-            <small className="text-light">
-              <i className="bi bi-clock-history me-1 text-info"></i>
-              Actualizado: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </small>
-              */}
           </div>
         </div>
       </div>

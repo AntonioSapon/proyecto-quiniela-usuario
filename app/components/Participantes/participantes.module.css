@@ -1,227 +1,253 @@
-/* Participantes.module.css */
-
-.title {
-  text-align: center;
-}
-
-.cardContainer {
-  text-align: center;
-  width: 70%; /* Ancho al 75% */
-  margin: 2rem auto; /* Centrado horizontal con margen */
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: none;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  overflow: hidden; /* Para bordes redondeados */
-  height: 7vh; /* Altura al 75% de la ventana */
-}
+/* ===== CLASIFICACIÓN GENERAL ===== */
 
 .cardHeader {
+  max-width: 1000px;
+  margin: 0 auto 36px auto;
+  padding: 26px 24px 22px;
+
+  background: linear-gradient(
+    to right,
+    rgba(255, 217, 0, 0.23),
+    rgba(255, 217, 0, 0.12),
+    rgba(82, 81, 81, 0.05)
+  );
+
+  border-radius: 18px;
   text-align: center;
-  width: 70%; /* Ancho al 75% */
-  margin: 2rem auto; /* Centrado horizontal con margen */
-  background: rgba(27, 38, 59, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: none;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  overflow: hidden; /* Para bordes redondeados */
-  
-  height: 70px; /* Altura al 75% de la ventana */
+  position: relative;
+
+  border: 1px solid rgba(73, 73, 73, 0.945);
+
+  box-shadow:
+    0 0 30px rgba(255, 215, 0, 0.12),
+    inset 0 0 18px rgba(255, 215, 0, 0.08);
 }
 
+
+
+
+/* ===== TABLA DE PARTICIPANTES ===== */
+
 .table {
-  width: 70%;
-  color: #f8f9fa;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  color: #f1f1f1;
   border-collapse: separate;
-  border-spacing: 0 8px;
-  margin: 0 auto; /* Centrar tabla */
+  border-spacing: 0 10px;
   text-align: center;
-  
 }
 
 .table th {
-  
+  background: rgba(255, 255, 255, 0.05);
   font-weight: 600;
-  padding: 15px 10px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 12px;
   border: none;
-  background: rgba(27, 38, 59, 0.7);
+  text-align: center;
 }
 
 .table td {
-  
-  padding: 15px 10px;
+  padding: 14px 12px;
   vertical-align: middle;
   border: none;
+  text-align: center;
 }
 
 .tableRow {
-  border-radius: 15px;
-  background: rgba(42, 56, 78, 0.781);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  
-}
-
-.tableRow:nth-child(even) {
-  
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(
+    to right,
+    rgba(187, 186, 186, 0.09), 
+    rgba(128, 128, 128, 0.06), 
+    rgba(82, 81, 81, 0.05)
+  );
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
 .tableRow:hover {
-  
-  background: rgba(255, 255, 255, 0.041) !important;
-  transform: translateY(-2px);
-  transition: all 0.2s ease;
-  
+  transform: translateY(-2.5px);
 }
 
+/* ===== POSICIÓN ===== */
+
 .positionBadge {
-  
-  width: 35px; 
-  height: 35px;
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  border-radius: 8px;
 }
 
 .bgGold {
-  background: linear-gradient(135deg, #ffd700, #ffb142) !important;
-  color: #000 !important;
+  background: linear-gradient(135deg, #ffd700, #ffb703);
+  color: #121212;
 }
 
 .bgSilver {
-  background: linear-gradient(135deg, #c0c0c0, #a0a0a0) !important;
-  color: #000 !important;
+  background: linear-gradient(135deg, #cfcfcf, #a9a9a9);
+  color: #121212;
 }
 
 .bgBronze {
-  background: linear-gradient(135deg, #cd7f32, #a56a2b) !important;
-  color: #000 !important;
+  background: linear-gradient(135deg, #cd7f32, #a56a2b);
+  color: #121212;
 }
 
-.avatar {
-  width: 45px; 
-  height: 45px;
-  background: linear-gradient(135deg, #415a77, #1b263b);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #ffda79;
+/* ===== PODIO ===== */
+
+.firstPlace {
+  background: linear-gradient(
+    to right,
+    rgba(255, 217, 0, 0.23),
+    rgba(255, 217, 0, 0.1),
+    rgba(82, 81, 81, 0.05)
+  );
+}
+.secondPlace {
+  background: linear-gradient(
+    to right,
+    rgba(226, 226, 217, 0.23),
+    rgba(226, 226, 217, 0.1),
+    rgba(82, 81, 81, 0.05)
+  );
+}
+.thirdPlace {
+  background: linear-gradient(
+    to right,
+    rgba(255, 166, 0, 0.23), 
+    rgba(255, 166, 0, 0.1),
+    rgba(82, 81, 81, 0.05)
+  );
 }
 
-.star {
-  bottom: -5px;
-  right: -5px;
-  font-size: 1.2rem;
-  
-}
+/* ===== PUNTOS ===== */
 
 .pointsBadge {
-  
-  display: inline-block;
-  min-width: 45px;
-  padding: 8px 12px;
-  background: linear-gradient(135deg, #ffda79, #ffb142);
-  border-radius: 5px;
-  color: #1b263b;
-  font-size: 1.1rem;
-  font-weight: bold;
+  min-width: 54px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #ffda79, #ffb703);
+  border-radius: 8px;
+  color: #121212;
+  font-size: 1.2rem;
+  font-weight: 800;
 }
 
+/* ===== BADGES ===== */
+
 .exactBadge {
-  background-color: rgba(40, 167, 69, 0.25) !important;
-  color: #f8f9fa !important;
-  border-radius: 5px;
-  font-size: 1rem;
-  min-width: 50px;
-  padding: 0.5rem;
+  background: rgba(40, 167, 69, 0.25);
+  color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  min-width: 44px;
 }
 
 .winnerBadge {
-  background-color: rgba(255, 193, 7, 0.25) !important;
-  color: #f8f9fa !important;
-  border-radius: 5px;
-  font-size: 1rem;
-  min-width: 50px;
-  padding: 0.5rem;
+  background: rgba(255, 193, 7, 0.25);
+  color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  min-width: 44px;
 }
 
 .missedBadge {
-  background-color: rgba(220, 53, 69, 0.25) !important;
-  color: #f8f9fa !important;
-  border-radius: 5px;
-  font-size: 1rem;
-  min-width: 50px;
-  padding: 0.5rem;
+  background: rgba(220, 53, 69, 0.25);
+  color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  min-width: 44px;
 }
+
+/* ===== FOOTER ===== */
 
 .cardFooter {
-  
-  width: 85%;
-  background: rgba(27, 38, 59, 0.7); 
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  padding: 1rem 1.5rem;
+  max-width: 1000px;
+  margin: 24px auto 0 auto;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
 }
 
-.firstPlace::before {
-  
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: linear-gradient(to bottom, #ffd700, #ffb142);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
+/* ===== EMPTY STATE ===== */
 
-.secondPlace::before {
-  
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.thirdPlace::before {
-  
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: linear-gradient(to bottom, #cd7f32, #a56a2b);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-/* Estado vacío */
 .emptyState {
   text-align: center;
-  padding: 3rem;
-  color: rgba(224, 225, 221, 0.6);
-  padding-top: 150px;
+  padding-top: 160px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .emptyState .bi {
   font-size: 3rem;
-  margin-bottom: 1rem;
-  color: rgba(255, 218, 121, 0.3);
+  color: rgba(255, 215, 0, 0.3);
 }
 
 .emptyState h3 {
   color: #ffda79;
-  margin-bottom: 0.5rem;
 }
+
+/* ===== CONTENEDOR GENERAL DE LA TABLA ===== */
+
+.tableWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 20px 28px 20px;
+  border-radius: 18px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.01)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.45),
+    inset 0 0 18px rgba(255, 255, 255, 0.04);
+}
+
+
+/* ===== COPA DEL MUNDO COMO FONDO DINÁMICO ===== */
+
+.tableWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.tableWrapper::before {
+  content: "";
+  position: absolute;
+  top: 50%;               /* 🔥 SIEMPRE centro vertical */
+  left: 50%;              /* centro horizontal */
+  transform: translate(-50%, -50%);
+
+  width: 80%;
+  height: 80%;
+
+  background-image: url("/WorldCup.png"); /* AJUSTA SI CAMBIA */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  opacity: 0.07;
+  filter: blur(0.5px);
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cardHeader h2 {
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cardHeader i {
+  font-size: 1.8rem;
+  vertical-align: middle;
+}
+
