@@ -251,3 +251,197 @@
   vertical-align: middle;
 }
 
+/* ===================================================== */
+/* ===== RESPONSIVE MÓVIL – CLASIFICACIÓN GENERAL ===== */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+
+  /* Ocultar columnas NO esenciales en móvil */
+  .table th:nth-child(4),
+  .table th:nth-child(5),
+  .table th:nth-child(6),
+  .table td:nth-child(4),
+  .table td:nth-child(5),
+  .table td:nth-child(6) {
+    display: none;
+  }
+
+  /* Reducir padding general de la tabla */
+  .table th,
+  .table td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Posición (#) más compacta */
+  .positionBadge {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+
+  /* Nombre del participante más protagonista */
+  .table td:nth-child(2) .fw-semibold {
+    font-size: 0.95rem;
+  }
+
+  /* Ocultar texto secundario (puntos extras) en móvil */
+  .table td:nth-child(2) small {
+    display: none;
+  }
+
+  /* Puntos más visibles */
+  .pointsBadge {
+    font-size: 1rem;
+    padding: 8px 10px;
+    min-width: 48px;
+  }
+  
+
+  /* Reducir separación vertical entre filas */
+  .table {
+    border-spacing: 0 6px;
+  }
+
+  /* Footer más compacto */
+  .cardFooter {
+    font-size: 0.75rem;
+    padding: 10px 14px;
+  }
+}
+
+
+/* ===================================================== */
+/* ===== FIX DEFINITIVO RESPONSIVE MÓVIL (OPCIÓN B) ==== */
+/* ===================================================== */
+
+/* Detalles móviles OCULTOS por defecto (desktop) */
+.mobileDetails {
+  display: none;
+}
+
+/* Nombre + extras */
+.participantName small {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ================= MÓVIL ================= */
+@media (max-width: 768px) {
+  /* Ocultar columnas extra */
+  .table th:nth-child(4),
+  .table th:nth-child(5),
+  .table th:nth-child(6),
+  .table td:nth-child(4),
+  .table td:nth-child(5),
+  .table td:nth-child(6) {
+    display: none;
+  }
+
+   /* Feedback táctil */
+  .tableRow {
+    cursor: pointer;
+  }
+
+  .tableRow:focus-within {
+    outline: 2px solid rgba(255, 218, 121, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+/* ===== TOGGLE MÓVIL (CLICK ABRIR / CERRAR) ===== */
+
+.mobileDetails {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .rowOpen .mobileDetails {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #ddd;
+  }
+
+  .tableRow {
+    cursor: pointer;
+  }
+}
+
+/* ===================================================== */
+/* ===== DETALLES MÓVIL (Exactos / Ganador / etc) ===== */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+
+  /* Oculto por defecto */
+  .mobileDetails {
+    display: none;
+    margin-top: 10px;
+
+    /* animación */
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    animation: fadeSlideIn 0.6s ease forwards;
+  }
+
+  /* Visible SOLO cuando está activo */
+  .mobileDetails.open {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .mobileDetails div {
+  display: flex;
+  justify-content: center;   /* 👈 centra horizontal */
+  align-items: center;       /* 👈 centra vertical */
+
+  padding: 6px 10px;
+  border-radius: 5px;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f1f1;
+  text-align: center;        /* 👈 respaldo extra */
+}
+
+
+  /* Exactos */
+  .mobileDetails div:nth-child(1) {
+    background: rgba(40, 167, 69, 0.25);
+    color: #d4f8df;
+  }
+
+  /* Ganador */
+  .mobileDetails div:nth-child(2) {
+    background: rgba(255, 193, 7, 0.25);
+    color: #fff1c1;
+  }
+
+  /* Fallados */
+  .mobileDetails div:nth-child(3) {
+    background: rgba(220, 53, 69, 0.25);
+    color: #ffd6db;
+  }
+
+  /* Extras */
+  .mobileDetails div:nth-child(4) {
+    background: rgba(138, 43, 226, 0.25);
+    color: #e8d9ff;
+  }
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './participantes.module.css';
 
 type Participante = {
@@ -15,12 +16,16 @@ type ParticipantesProps = {
 };
 
 export default function Participantes({ participantes }: ParticipantesProps) {
-  const participantesOrdenados = [...participantes].sort((a, b) => 
-  (b.puntosTotales || 0) - (a.puntosTotales || 0) || 
-  (b.PartidosAcertados || 0) - (a.PartidosAcertados || 0)
-);
+  const [openId, setOpenId] = useState<string | null>(null);
 
-  if (!participantesOrdenados?.length) {
+  
+  const participantesOrdenados = [...participantes].sort(
+    (a, b) =>
+      (b.puntosTotales || 0) - (a.puntosTotales || 0) ||
+      (b.PartidosAcertados || 0) - (a.PartidosAcertados || 0)
+  );
+
+  if (!participantesOrdenados.length) {
     return (
       <div className={styles.emptyState}>
         <i className="bi bi-calendar-x"></i>
@@ -31,83 +36,88 @@ export default function Participantes({ participantes }: ParticipantesProps) {
   }
 
   return (
-    
-    <div className="d-flex justify-content-center"> 
-      <div className={` ${styles.cardHeader}`}>
-        <h2 className="mb-0 text-white fw-bold"> 
-          <i className="bi bi-trophy me-3 text-warning "> </i>
-          ㅤClasificación General  
+    <div className="d-flex justify-content-center">
+      <div className={styles.cardHeader}>
+        <h2 className="mb-0 text-white fw-bold">
+          <i className="bi bi-trophy me-3 text-warning"></i>
+          ㅤClasificación General
         </h2>
       </div>
-      
+
       <div className={styles.tableWrapper}>
         <div className="table-responsive">
           <table className={`table align-middle mb-0 ${styles.table}`}>
             <thead>
               <tr>
-                <th className="text-light" style={{ width: '60px', paddingLeft: '25px' }}>#</th>
-                <th className="text-light">Participante</th>
-                <th className="text-center text-light" style={{ width: '120px' }}>Puntos</th>
-                <th className="text-center text-light" style={{ width: '140px' }} title="Aciertos Exactos">
-                  <i className="bi bi-check-circle fs-5 text-success me-1"></i>
-                  <span className="d-none d-md-inline">  Exactos</span>
-                </th>
-                <th className="text-center text-light" style={{ width: '140px' }} title="Ganador/Empate">
-                  <i className="bi bi-flag fs-5 text-warning me-1"></i>
-                  <span className="d-none d-md-inline">  Ganador</span>
-                </th>
-                <th className="text-center text-light" style={{ width: '140px' }} title="No Acertados">
-                  <i className="bi bi-x-circle fs-5 text-danger me-1"></i>
-                  <span className="d-none d-md-inline">  Fallados</span>
-                </th>
+                <th>#</th>
+                <th>Participante</th>
+                <th>Puntos</th>
+                <th>  <i className="bi bi-check-circle-fill"></i> Exactos</th>
+                <th>  <i className="bi-flag-fill"></i> Ganador</th>
+                <th>  <i className="bi-x-circle-fill"></i> Fallados</th>
               </tr>
             </thead>
             <tbody>
               {participantesOrdenados.map((p, index) => (
-                <tr 
-                  key={`${p._id}-${index}`} 
-                  className={`${index === 0 ? styles.firstPlace : index === 1 ? styles.secondPlace : index === 2 ? styles.thirdPlace : ''} ${styles.tableRow}`}
+                <tr
+                  key={p._id}
+                  className={`${styles.tableRow} ${
+                    openId === p._id ? styles.rowOpen : ''
+                  } ${
+                    index === 0
+                      ? styles.firstPlace
+                      : index === 1
+                      ? styles.secondPlace
+                      : index === 2
+                      ? styles.thirdPlace
+                      : ''
+                  }`}
+                  onClick={() =>
+                    setOpenId(openId === p._id ? null : p._id)
+                  }
                 >
-                  <td className="fw-bold" style={{ paddingLeft: '25px' }}>
-                    <span className={`badge rounded-circle ${
-                      index === 0 ? styles.bgGold : 
-                      index === 1 ? styles.bgSilver : 
-                      index === 2 ? styles.bgBronze : 'bg-secondary'
-                    } ${styles.positionBadge}`}>
-                      {index + 1}
-                    </span>
-                  </td>
-                  
+                  {/* POSICIÓN */}
                   <td>
-                    <div className="d-flex align-items-center">
-                      
-                      <div>
-                        <div className="fw-semibold text-light">{p.nombre}</div>
-                        <small className="text-muted">Puntos extras: {p.puntosExtras || 0}</small>
-                      </div>
+                    <span className={styles.positionBadge}>{index + 1}</span>
+                  </td>
+
+                  {/* PARTICIPANTE */}
+                  <td>
+                    <div className={styles.participantName}>
+                      <strong>{p.nombre}</strong>
+                      <small>Puntos extra: {p.puntosExtras || 0}</small>
+                    </div>
+
+                    {/* ===== DETALLES SOLO MÓVIL ===== */}
+                    <div className={styles.mobileDetails}>
+                      <div>  <i className="bi bi-check-circle-fill"></i> ㅤExactos: {p.PartidosAcertados}</div>
+                      <div>  <i className="bi bi-flag-fill"></i> ㅤGanador: {p.PartidosGanador}</div>
+                      <div>  <i className="bi bi-x-circle-fill"></i> ㅤFallados: {p.PartidosNoAcertados}</div>
                     </div>
                   </td>
-                  
-                  <td className="text-center">
-                    <span className={`fw-bold ${styles.pointsBadge}`}>
-                      {p.puntosTotales}
-                    </span>
+
+                  {/* PUNTOS */}
+                  <td>
+                    <span className={styles.pointsBadge}>{p.puntosTotales}</span>
                   </td>
-                  
-                  <td className="text-center">
-                    <span className={`badge ${styles.exactBadge}`}>
+
+                  {/* EXACTOS */}
+                  <td>
+                    <span className={styles.exactBadge}>
                       {p.PartidosAcertados}
                     </span>
                   </td>
-                  
-                  <td className="text-center">
-                    <span className={`badge ${styles.winnerBadge}`}>
+
+                  {/* GANADOR */}
+                  <td>
+                    <span className={styles.winnerBadge}>
                       {p.PartidosGanador}
                     </span>
                   </td>
-                  
-                  <td className="text-center">
-                    <span className={`badge ${styles.missedBadge}`}>
+
+                  {/* FALLADOS */}
+                  <td>
+                    <span className={styles.missedBadge}>
                       {p.PartidosNoAcertados}
                     </span>
                   </td>
@@ -117,20 +127,12 @@ export default function Participantes({ participantes }: ParticipantesProps) {
           </table>
         </div>
       </div>
-      
-      <div className={`card-footer ${styles.cardFooter}`}>
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-          <div className="mb-2 mb-md-0">
-            <small className="text-light">
-              <i className="bi bi-info-circle me-2 text-warning">ㅤ</i>
-              <span className="d-block d-md-inline"> Aciertos exactos: <span className="fw-bold">5 Pts </span></span> 
-              <span className="d-none d-md-inline mx-2">ㅤ|ㅤ</span> 
-              <span className="d-block d-md-inline"> Ganador / Empate: <span className="fw-bold">3 Pts</span></span>
-            </small>
-          </div>
-          <div>
-          </div>
-        </div>
+
+      <div className={styles.cardFooter}>
+        <small>
+          Exactos: <strong>5 pts</strong> | Ganador/Empate:{' '}
+          <strong>3 pts</strong>
+        </small>
       </div>
     </div>
   );

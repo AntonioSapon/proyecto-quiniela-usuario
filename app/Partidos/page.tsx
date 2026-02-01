@@ -22,7 +22,7 @@ export default function PartidosPage() {
         <div className={styles.sectionHeader}>
           <h2 className="mb-0 text-white fw-bold">
             <i className="bi bi-calendar-check"></i>
-            ㅤLISTA DE PARTIDOS
+            ㅤPARTIDOS
           </h2>
         </div>
 

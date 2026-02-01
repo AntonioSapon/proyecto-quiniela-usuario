@@ -131,9 +131,20 @@ const getFlagUrl = (country: string) => {
 
 /* ================= COMPONENTE ================= */
 export default function Partidos({ partidos }: PartidosProps) {
+  
+
   const [jornadaSeleccionada, setJornadaSeleccionada] =
     useState<number | 'todas'>('todas');
   const [jornadasDisponibles, setJornadasDisponibles] = useState<number[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  /* Detectar tamaño de pantalla */
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (partidos.length > 0) {
@@ -172,18 +183,22 @@ export default function Partidos({ partidos }: PartidosProps) {
 
   return (
     <div className={styles.mainContainer}>
+      {/* Selector de jornada */}
       <div className={styles.jornadaSelector}>
         <label>Jornada:</label>
+
         <select
-          value={jornadaSeleccionada}
-          onChange={e =>
+            value={jornadaSeleccionada}
+            onChange={e =>
             setJornadaSeleccionada(
               e.target.value === 'todas'
                 ? 'todas'
                 : Number(e.target.value)
             )
           }
-        >
+
+          >
+
           <option value="todas">Todas</option>
           {jornadasDisponibles.map(j => (
             <option key={j} value={j}>
@@ -191,64 +206,127 @@ export default function Partidos({ partidos }: PartidosProps) {
             </option>
           ))}
         </select>
+
       </div>
 
-      <div className={styles.tableWrapper}>
-        <table className={styles.partidosTable}>
-          <thead>
-            <tr>
-              <th>Jornada</th>
-              <th>Local</th>
-              <th>Resultado</th>
-              <th>Visitante</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {partidosFiltrados.map(partido => (
-              <tr key={partido.id}>
-                <td className={styles.jornadaCol}>{partido.jornada}</td>
+      {/* ================= DESKTOP (TABLA) ================= */}
+      {!isMobile && (
+        <div
+          key={jornadaSeleccionada}
+          className={`${styles.tableWrapper} ${styles.fadeIn}`}
+        >
+          <table className={styles.partidosTable}>
+            <thead>
+              <tr>
+                <th>Jornada</th>
+                <th>Local</th>
+                <th>Resultado</th>
+                <th>Visitante</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {partidosFiltrados.map(partido => (
+                <tr key={partido.id}>
+                  <td className={styles.jornadaCol}>{partido.jornada}</td>
 
-                <td className={styles.teamCell}>
+                  <td>
+                    <div className={`${styles.teamCell} ${styles.teamLocal}`}>
+                      {getFlagUrl(partido.local) && (
+                        <img
+                          src={getFlagUrl(partido.local)!}
+                          className={styles.flag}
+                        />
+                      )}
+                      <span>{partido.local}</span>
+                    </div>
+                  </td>
+
+                  <td className={styles.resultadoCol}>
+                    {partido.resultado ?? '—'}
+                  </td>
+
+                  <td>
+                    <div
+                      className={`${styles.teamCell} ${styles.teamVisitante}`}
+                    >
+                      {getFlagUrl(partido.visitante) && (
+                        <img
+                          src={getFlagUrl(partido.visitante)!}
+                          className={styles.flag}
+                        />
+                      )}
+                      <span>{partido.visitante}</span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span
+                      className={`${styles.statusBadge} ${getStatusClass(
+                        partido.status
+                      )}`}
+                    >
+                      {partido.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ================= MÓVIL (CARDS) ================= */}
+      {isMobile && (
+        <div key={jornadaSeleccionada}
+           className={`${styles.mobileList} ${styles.fadeIn}`}>
+          {partidosFiltrados.map(partido => (
+            <div key={partido.id} className={styles.mobileCard}>
+
+              {/* Jornada */}
+              <div className={styles.mobileJornada}>
+                Jornada {partido.jornada}
+              </div>
+
+              <div className={styles.mobileTeams}>
+                <div className={styles.mobileTeam}>
                   {getFlagUrl(partido.local) && (
                     <img
                       src={getFlagUrl(partido.local)!}
-                      alt={partido.local}
                       className={styles.flag}
                     />
                   )}
                   <span>{partido.local}</span>
-                </td>
+                </div>
 
-                <td className={styles.resultadoCol}>
+                <div className={styles.mobileResult}>
                   {partido.resultado ?? '—'}
-                </td>
+                </div>
 
-                <td className={styles.teamCell}>
+                <div className={styles.mobileTeam}>
                   {getFlagUrl(partido.visitante) && (
                     <img
                       src={getFlagUrl(partido.visitante)!}
-                      alt={partido.visitante}
                       className={styles.flag}
                     />
                   )}
                   <span>{partido.visitante}</span>
-                </td>
+                </div>
+              </div>
 
-                <td>
-                  <span
-                    className={`${styles.statusBadge} ${getStatusClass(
-                      partido.status
-                    )}`}
-                  >
-                    {partido.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <div className={styles.mobileStatus}>
+                <span
+                  className={`${styles.statusBadge} ${getStatusClass(
+                    partido.status
+                  )}`}
+                >
+                  {partido.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

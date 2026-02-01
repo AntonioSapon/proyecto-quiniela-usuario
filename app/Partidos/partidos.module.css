@@ -1,4 +1,6 @@
-/* ===== PAGE WRAPPER (MISMO ESTILO QUE INICIO) ===== */
+/* ===================================================== */
+/* ===== PAGE WRAPPER (MISMO ESTILO QUE INICIO) ========= */
+/* ===================================================== */
 
 .partidosPage {
   min-height: 100vh;
@@ -10,7 +12,7 @@
   );
   position: relative;
   overflow: hidden;
-  padding-top: 140px;   /* 👈 evita que quede detrás del navbar */
+  padding-top: 140px;
   padding-bottom: 120px;
 }
 
@@ -27,7 +29,7 @@
   pointer-events: none;
 }
 
-/* Contenido centrado */
+/* Contenedor general del contenido */
 .content {
   position: relative;
   z-index: 2;
@@ -36,7 +38,10 @@
   padding: 0 16px;
 }
 
-/* Header */
+/* ===================================================== */
+/* ===== HEADER / TÍTULO ================================ */
+/* ===================================================== */
+
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -48,49 +53,33 @@
   text-transform: uppercase;
 }
 
-/* ===== HEADER ESTILO INICIO ===== */
-
+/* Header estilo "Inicio" */
 .sectionHeader {
   max-width: 1000px;
   margin: 0 auto 36px auto;
   padding: 26px 24px 22px;
-
   background: linear-gradient(
     to right,
     rgba(255, 217, 0, 0.23),
     rgba(255, 217, 0, 0.12),
     rgba(82, 81, 81, 0.05)
   );
-
   border-radius: 18px;
   text-align: center;
-  position: relative;
-
   border: 1px solid rgba(73, 73, 73, 0.945);
-
   box-shadow:
     0 0 30px rgba(255, 215, 0, 0.12),
     inset 0 0 18px rgba(255, 215, 0, 0.08);
 }
 
-.sectionHeader h2 {
-  font-size: 1.6rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.sectionHeader i {
-  font-size: 1.8rem;
-  vertical-align: middle;
-}
-
-
-/* ===== CONTENEDOR PRINCIPAL DE LA TABLA ===== */
+/* ===================================================== */
+/* ===== CONTENEDOR DE LA TABLA ========================= */
+/* ===================================================== */
 
 .tableContainer {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 24px 20px 28px 20px;
+  padding: 12px 10px 14px;
   border-radius: 18px;
   background: linear-gradient(
     to bottom,
@@ -103,14 +92,15 @@
     inset 0 0 18px rgba(255, 255, 255, 0.04);
 }
 
-
-
 .mainContainer {
   width: 100%;
   padding: 20px;
 }
 
-/* Selector */
+/* ===================================================== */
+/* ===== SELECTOR DE JORNADA ============================ */
+/* ===================================================== */
+
 .jornadaSelector {
   display: flex;
   gap: 15px;
@@ -131,7 +121,10 @@
   border: 1px solid #333;
 }
 
-/* Tabla */
+/* ===================================================== */
+/* ===== TABLA ========================================== */
+/* ===================================================== */
+
 .tableWrapper {
   overflow-x: auto;
 }
@@ -151,11 +144,12 @@
 .partidosTable th,
 .partidosTable td {
   padding: 12px;
-  text-align: center;
   border-bottom: 1px solid #2a2a2a;
 }
 
+/* IMPORTANTE: no centramos todo */
 .partidosTable th {
+  text-align: center;
   text-transform: uppercase;
   font-size: 0.8rem;
   color: #ffda79;
@@ -165,23 +159,32 @@
   background: #1f1f1f;
 }
 
-/* Columnas */
+/* ===================================================== */
+/* ===== COLUMNAS ESPECÍFICAS =========================== */
+/* ===================================================== */
+
 .jornadaCol {
+  text-align: center;
   font-weight: bold;
   color: #ffda79;
 }
 
 .resultadoCol {
+  text-align: center;
   font-weight: bold;
   font-size: 1.1rem;
 }
 
-/* Estados */
+/* ===================================================== */
+/* ===== ESTADOS DEL PARTIDO ============================ */
+/* ===================================================== */
+
 .statusBadge {
   padding: 5px 10px;
   border-radius: 12px;
   font-size: 0.75rem;
   text-transform: uppercase;
+  display: inline-block;
 }
 
 .pending {
@@ -204,31 +207,217 @@
   color: #ff6b6b;
 }
 
-/* Vacío */
+/* ===================================================== */
+/* ===== ESTADO VACÍO =================================== */
+/* ===================================================== */
+
 .emptyState {
   text-align: center;
   padding: 40px;
   color: #999;
 }
 
-/* ===== BANDERAS ===== */
+/* ===================================================== */
+/* ===== EQUIPOS (BANDERA + NOMBRE) ==================== */
+/* ===================================================== */
 
-.team {
+/* Contenedor bandera + nombre */
+.teamCell {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   white-space: nowrap;
+  width: max-content;
 }
 
+/* LOCAL → alineado a la DERECHA (pegado al resultado) */
+.teamLocal {
+  margin-left: auto;           /* 🔥 CLAVE */
+  flex-direction: row-reverse; /* Nombre | Bandera */
+  text-align: right;
+}
+
+/* VISITANTE → alineado a la IZQUIERDA (pegado al resultado) */
+.teamVisitante {
+  margin-right: auto;          /* 🔥 CLAVE */
+  flex-direction: row;         /* Bandera | Nombre */
+  text-align: left;
+}
+
+/* Bandera */
 .flag {
   width: 33px;
   height: auto;
-  display: block;
   border-radius: 2px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
-.teamCell {
-  white-space: nowrap;
+
+/* ===================================================== */
+/* ===== MOBILE FIX DEFINITIVO (HEADERS + ESTADO) ===== */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+
+  /* Tabla flexible */
+  .partidosTable {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  /* Ocultar Jornada */
+  .partidosTable th:nth-child(1),
+  .partidosTable td:nth-child(1) {
+    display: none;
+  }
+
+  /* HEADERS: permitir salto de línea */
+  .partidosTable th {
+    white-space: normal;
+    line-height: 1.1;
+    padding: 6px 4px;
+  }
+
+  /* CELDAS */
+  .partidosTable td {
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+
+  /* Anchos exactos */
+  .partidosTable th:nth-child(2),
+  .partidosTable td:nth-child(2) {
+    width: 35%;
+  }
+
+  .partidosTable th:nth-child(3),
+  .partidosTable td:nth-child(3) {
+    width: 15%;
+  }
+
+  .partidosTable th:nth-child(4),
+  .partidosTable td:nth-child(4) {
+    width: 35%;
+  }
+
+  .partidosTable th:nth-child(5),
+  .partidosTable td:nth-child(5) {
+    width: 15%;
+  }
+
+  /* Equipos */
+  .teamCell {
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .teamCell span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .flag {
+    width: 22px;
+    flex-shrink: 0;
+  }
+
+  /* Resultado compacto */
+  .resultadoCol {
+    font-size: 0.85rem;
+  }
+
+  /* ===== ESTADO COMPACTO ===== */
+  .statusBadge {
+    font-size: 0.65rem;
+    padding: 3px 4px;
+    white-space: normal;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  /* ===== MOBILE CARDS ===== */
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
+
+.mobileCard {
+  background: #121212;
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #2a2a2a;
+}
+
+.mobileTeams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobileTeam {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.mobileResult {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffda79;
+}
+
+.mobileStatus {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.mobileJornada {
+  font-size: 0.75rem;
+  font-weight: 550;
+  color: #ffda79;
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+  align-self: flex-start;
+
+  width: 37%;
+  background: rgba(255, 218, 121, 0.10);
+  padding: 4px 10px;
+  border-radius: 5px;
+
+  letter-spacing: 0.5px; 
+}
+
+}
+
+/* ======================================= */
+/* ===== ANIMACIÓN CAMBIO DE JORNADA ===== */
+/* ======================================= */
+
+
+/* Estado al cambiar jornada */
+
+
+/* Estado inicial / visible */
+.fadeIn {
+  animation: fadeSlideIn 400ms ease-out;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
