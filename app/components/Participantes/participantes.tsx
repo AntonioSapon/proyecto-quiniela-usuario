@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useAppSelector } from '@/Redux/store'; // 👈 NUEVO
+import LoadingOverlay from '@/app/components/LoadingOverlay/LoadingOverlay'; // 👈 NUEVO
 import styles from './participantes.module.css';
 
 type Participante = {
@@ -18,14 +20,17 @@ type ParticipantesProps = {
 export default function Participantes({ participantes }: ParticipantesProps) {
   const [openId, setOpenId] = useState<string | null>(null);
 
-  
+  // 🔥 Estado de carga desde Redux
+  const { loading } = useAppSelector((state) => state.participantes);
+
   const participantesOrdenados = [...participantes].sort(
     (a, b) =>
       (b.puntosTotales || 0) - (a.puntosTotales || 0) ||
       (b.PartidosAcertados || 0) - (a.PartidosAcertados || 0)
   );
 
-  if (!participantesOrdenados.length) {
+  // Estado vacío (cuando ya terminó de cargar y no hay datos)
+  if (!loading && !participantesOrdenados.length) {
     return (
       <div className={styles.emptyState}>
         <i className="bi bi-calendar-x"></i>
@@ -36,10 +41,16 @@ export default function Participantes({ participantes }: ParticipantesProps) {
   }
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center position-relative">
+      
+      {/* 🔥 LOADING OVERLAY */}
+      {loading && (
+        <LoadingOverlay text="Cargando clasificación..." />
+      )}
+
       <div className={styles.cardHeader}>
         <h2 className="mb-0 text-white fw-bold">
-          <i className="bi bi-trophy me-3 text-warning"></i>
+          <i className="bi bi-trophy-fill me-3 text-warning"></i>
           ㅤClasificación General
         </h2>
       </div>
@@ -52,9 +63,9 @@ export default function Participantes({ participantes }: ParticipantesProps) {
                 <th>#</th>
                 <th>Participante</th>
                 <th>Puntos</th>
-                <th>  <i className="bi bi-check-circle-fill"></i> Exactos</th>
-                <th>  <i className="bi-flag-fill"></i> Ganador</th>
-                <th>  <i className="bi-x-circle-fill"></i> Fallados</th>
+                <th><i className="bi bi-check-circle-fill"></i> Exactos</th>
+                <th><i className="bi bi-flag-fill"></i> Ganador</th>
+                <th><i className="bi bi-x-circle-fill"></i> Fallados</th>
               </tr>
             </thead>
             <tbody>
@@ -90,9 +101,9 @@ export default function Participantes({ participantes }: ParticipantesProps) {
 
                     {/* ===== DETALLES SOLO MÓVIL ===== */}
                     <div className={styles.mobileDetails}>
-                      <div>  <i className="bi bi-check-circle-fill"></i> ㅤExactos: {p.PartidosAcertados}</div>
-                      <div>  <i className="bi bi-flag-fill"></i> ㅤGanador: {p.PartidosGanador}</div>
-                      <div>  <i className="bi bi-x-circle-fill"></i> ㅤFallados: {p.PartidosNoAcertados}</div>
+                      <div><i className="bi bi-check-circle-fill"></i> ㅤExactos: {p.PartidosAcertados}</div>
+                      <div><i className="bi bi-flag-fill"></i> ㅤGanador: {p.PartidosGanador}</div>
+                      <div><i className="bi bi-x-circle-fill"></i> ㅤFallados: {p.PartidosNoAcertados}</div>
                     </div>
                   </td>
 

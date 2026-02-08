@@ -21,7 +21,7 @@ export default function PartidosPage() {
         {/* HEADER ESTILO INICIO */}
         <div className={styles.sectionHeader}>
           <h2 className="mb-0 text-white fw-bold">
-            <i className="bi bi-calendar-check"></i>
+            <i className="bi bi-calendar3"></i>
             ㅤPARTIDOS
           </h2>
         </div>

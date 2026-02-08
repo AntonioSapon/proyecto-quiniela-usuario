@@ -1,35 +1,129 @@
-.container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 20px;
+/* ===================================================== */
+/* ===== PAGE WRAPPER (MISMO ESTILO QUE INICIO) ========= */
+/* ===================================================== */
+
+.predicPage {
+  min-height: 100vh;
+  background: radial-gradient(
+    circle at top,
+    #1a1a1a 0%,
+    #121212 40%,
+    #0b0b0b 100%
+  );
+  position: relative;
+  overflow: hidden;
+  padding-top: 140px;
+  padding-bottom: 120px;
 }
+
+/* Overlay oscuro elegante */
+.predicPage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.85)
+  );
+  pointer-events: none;
+}
+
+/* Contenedor general del contenido */
+.content {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+
+/* ===================================================== */
+/* ===== FONDO GENERAL (IGUAL A INICIO / PARTIDOS) ===== */
+/* ===================================================== */
+
+:global(body) {
+  background: radial-gradient(
+    circle at top,
+    #1a1a1a 0%,
+    #121212 40%,
+    #0b0b0b 100%
+  );
+}
+
+/* ===================================================== */
+/* ===== HEADER ESTILO INICIO =========================== */
+/* ===================================================== */
+
+.sectionHeader {
+  max-width: 1000px;
+  margin: 0 auto 36px auto; /* ⬅️ baja debajo del navbar */
+  padding: 26px 24px 22px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 217, 0, 0.23),
+    rgba(255, 217, 0, 0.12),
+    rgba(82, 81, 81, 0.05)
+  );
+  border-radius: 18px;
+  text-align: center;
+  border: 1px solid rgba(73, 73, 73, 0.945);
+  box-shadow:
+    0 0 30px rgba(255, 215, 0, 0.12),
+    inset 0 0 18px rgba(255, 215, 0, 0.08);
+}
+
+/* Título adaptable: nunca salta de línea */
+.sectionHeader h2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(1.05rem, 4vw, 1.6rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+
+
+
+/* ===================================================== */
+/* ===== CONTENEDOR GENERAL ============================= */
+/* ===================================================== */
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ===================================================== */
+/* ===== CARD PRINCIPAL ================================= */
+/* ===================================================== */
 
 .card {
-  background: rgba(42, 56, 78, 0.781);
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  margin-top: 30px;         /* separación del header */
+  background: rgba(18, 18, 18, 0.9);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.45),
+    inset 0 0 18px rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(6px);
 }
 
-.cardHeader {
-  padding: 20px;
-  background: rgba(27, 38, 59, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-}
-
-.title {
-  margin: 0;
-  color: #ffffff;
-  font-size: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* ===================================================== */
+/* ===== BODY =========================================== */
+/* ===================================================== */
 
 .cardBody {
   padding: 25px;
 }
+
+/* ===================================================== */
+/* ===== FORM =========================================== */
+/* ===================================================== */
 
 .formGroup {
   margin-bottom: 25px;
@@ -38,20 +132,19 @@
 .label {
   display: block;
   margin-bottom: 8px;
-  color: #f8f9fa;
-  font-weight: 500;
-  font-size: 1.1rem;
+  color: #e0e1dd;
+  font-weight: 600;
 }
 
 .select {
   width: 100%;
   padding: 12px 15px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(27, 38, 59, 0.7);
-  color: #f8f9fa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 30, 30, 0.9);
+  color: #ffffff;
   font-size: 1rem;
-  transition: all 0.3s ease;
+
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffda79' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -65,160 +158,280 @@
   box-shadow: 0 0 0 3px rgba(255, 218, 121, 0.25);
 }
 
-.prediccionesContainer {
-  margin-top: 20px;
-}
+/* ===================================================== */
+/* ===== SUBTÍTULOS ===================================== */
+/* ===================================================== */
 
 .subtitle {
   color: #ffffff;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 218, 121, 0.3);
+  border-bottom: 1px solid rgba(255, 218, 121, 0.35);
   display: flex;
   align-items: center;
 }
 
+.subtitle i {
+  color: #ffda79;
+}
+
+/* ===================================================== */
+/* ===== PREDICCIONES ESPECIALES ======================== */
+/* ===================================================== */
+
 .prediccionesEspeciales {
-  background: rgba(27, 38, 59, 0.5);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
   padding: 20px;
   margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .prediccionItem {
   display: flex;
-  margin-bottom: 12px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 }
 
 .prediccionLabel {
-  color: #adb5bd;
   width: 180px;
-  font-weight: 500;
-}
-
-.prediccionValue {
-  color: #f8f9fa;
+  color: #adb5bd;
   font-weight: 600;
 }
 
+.prediccionValue {
+  color: #ffda79;
+  font-weight: 700;
+}
+
+/* ===================================================== */
+/* ===== TABLA ========================================== */
+/* ===================================================== */
+
 .tableContainer {
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 18px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.01)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
 }
 
 .table th {
-  background: rgba(27, 38, 59, 0.9);
-  color: #ffffff;
-  padding: 14px 15px;
-  text-align: left;
-  font-weight: 500;
-  border-bottom: 2px solid rgba(255, 218, 121, 0.3);
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffda79;
+  padding: 14px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 218, 121, 0.35);
   text-align: center;
-  font-weight: bold;
 }
 
 .table td {
-  padding: 12px 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #f8f9fa;
+  padding: 12px;
+  color: #ffffff;
   text-align: center;
-}
-
-.table tr:last-child td {
-  border-bottom: none;
-}
-
-.table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .prediction {
   color: #4dabf7;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .result {
   color: #69db7c;
-  font-weight: 600;
+  font-weight: 700;
 }
+
+/* ===================================================== */
+/* ===== ESTADOS ======================================== */
+/* ===================================================== */
 
 .empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   padding: 30px;
   color: rgba(224, 225, 221, 0.6);
-  background: rgba(27, 38, 59, 0.3);
-  border-radius: 8px;
-  border: 1px dashed rgba(255, 218, 121, 0.3);
-  margin-top: 15px;
-}
-
-.empty i {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-  color: rgba(255, 218, 121, 0.3);
-}
-
-.empty p {
-  margin: 0;
-  font-size: 1.1rem;
-  text-align: center;
+  border: 1px dashed rgba(255, 218, 121, 0.35);
+  border-radius: 12px;
 }
 
 .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   padding: 20px;
   color: #ffda79;
-  font-size: 1.2rem;
 }
 
-.loading i {
-  margin-right: 15px;
-  font-size: 1.5rem;
-  animation: spin 1s linear infinite;
-}
+/* ===================================================== */
+/* ===== RESPONSIVE ===================================== */
+/* ===================================================== */
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 0 15px;
+  .cardBody {
+    padding: 18px;
   }
-  
-  .card {
-    border-radius: 12px;
-  }
-  
-  .table th, .table td {
-    padding: 10px 12px;
-    font-size: 0.9rem;
-  }
-  
+
   .prediccionItem {
     flex-direction: column;
   }
-  
+
   .prediccionLabel {
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
+}
+
+/* Extra pequeño (iPhone SE) */
+@media (max-width: 360px) {
+  .sectionHeader h2 {
+    font-size: 0.95rem;
+  }
+  
+  .sectionHeader i {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===================================================== */
+/* ===== MOBILE CARDS ULTRA COMPACTAS ================== */
+/* ===================================================== */
+
+.mobileOnly {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* Ocultar tabla en móvil */
+  .tableContainer {
+    display: none;
+  }
+
+  .mobileOnly {
+    display: block;
+  }
+
+  .mobileList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 🔥 muy compacto */
+  }
+
+  .mobileCard {
+    background: rgba(18, 18, 18, 0.9);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* FILA SUPERIOR */
+  .mobileRowTop {
+    display: flex;
+    
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .mobileJornada {
+    color: #ffda79;
+    font-size: 0.7rem;
+    min-width: 26px;
+  }
+
+  .mobileTeams {
+  width: 100%;                /* 👈 CLAVE */
+  display: flex;
+  justify-content: center;    /* 👈 centra horizontal */
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  font-weight: 600;
+  }
+
+  .mobileTeams strong {
+    color: #ffda79;
+    font-weight: 600;
+  }
+
+  /* ===== FILA INFERIOR MOBILE ===== */
+.mobileRowBottom {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Ambos ocupan el mismo espacio */
+.mobilePred,
+.mobileResult {
+  flex: 1;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Predicción */
+.mobilePred {
+  background: rgba(27, 38, 59, 0.4);
+  color: #9cb1ce;
+}
+
+/* Resultado real */
+.mobileResult {
+  background: rgba(74, 87, 89, 0.5);
+  color: #b0c4b1;
+}
+}
+
+/* ===== PARTIDO DESKTOP (ORDEN FIFA) ===== */
+
+.desktopTeams {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* LOCAL → nombre | bandera */
+.teamLocal {
+  flex-direction: row;
+}
+
+/* VISITANTE → bandera | nombre */
+.teamVisitante {
+  flex-direction: row;
+}
+
+.flag {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.vs {
+  font-weight: 700;
+  opacity: 0.6;
+  margin: 0 4px;
 }

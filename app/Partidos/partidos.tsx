@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useAppSelector } from '@/Redux/store'; // 👈 NUEVO
+import LoadingOverlay from '@/app/components/LoadingOverlay/LoadingOverlay'; // 👈 NUEVO
 import styles from './partidos.module.css';
 
 /* ================= NORMALIZACIÓN ================= */
@@ -131,7 +133,9 @@ const getFlagUrl = (country: string) => {
 
 /* ================= COMPONENTE ================= */
 export default function Partidos({ partidos }: PartidosProps) {
-  
+
+  // 🔥 Estado de carga desde Redux
+  const { loading } = useAppSelector((state) => state.partidos);
 
   const [jornadaSeleccionada, setJornadaSeleccionada] =
     useState<number | 'todas'>('todas');
@@ -173,7 +177,8 @@ export default function Partidos({ partidos }: PartidosProps) {
     }
   };
 
-  if (!partidos || partidos.length === 0) {
+  // ❗ Estado vacío SOLO si ya terminó de cargar
+  if (!loading && (!partidos || partidos.length === 0)) {
     return (
       <div className={styles.emptyState}>
         <h3>No hay partidos programados</h3>
@@ -182,23 +187,26 @@ export default function Partidos({ partidos }: PartidosProps) {
   }
 
   return (
-    <div className={styles.mainContainer}>
+    <div className={`${styles.mainContainer} position-relative`}>
+
+      {/* 🔥 LOADING OVERLAY */}
+      {loading && (
+        <LoadingOverlay text="Cargando partidos..." />
+      )}
+
       {/* Selector de jornada */}
       <div className={styles.jornadaSelector}>
         <label>Jornada:</label>
-
         <select
-            value={jornadaSeleccionada}
-            onChange={e =>
+          value={jornadaSeleccionada}
+          onChange={e =>
             setJornadaSeleccionada(
               e.target.value === 'todas'
                 ? 'todas'
                 : Number(e.target.value)
             )
           }
-
-          >
-
+        >
           <option value="todas">Todas</option>
           {jornadasDisponibles.map(j => (
             <option key={j} value={j}>
@@ -206,7 +214,6 @@ export default function Partidos({ partidos }: PartidosProps) {
             </option>
           ))}
         </select>
-
       </div>
 
       {/* ================= DESKTOP (TABLA) ================= */}
@@ -229,43 +236,27 @@ export default function Partidos({ partidos }: PartidosProps) {
               {partidosFiltrados.map(partido => (
                 <tr key={partido.id}>
                   <td className={styles.jornadaCol}>{partido.jornada}</td>
-
                   <td>
                     <div className={`${styles.teamCell} ${styles.teamLocal}`}>
                       {getFlagUrl(partido.local) && (
-                        <img
-                          src={getFlagUrl(partido.local)!}
-                          className={styles.flag}
-                        />
+                        <img src={getFlagUrl(partido.local)!} className={styles.flag} />
                       )}
                       <span>{partido.local}</span>
                     </div>
                   </td>
-
                   <td className={styles.resultadoCol}>
                     {partido.resultado ?? '—'}
                   </td>
-
                   <td>
-                    <div
-                      className={`${styles.teamCell} ${styles.teamVisitante}`}
-                    >
+                    <div className={`${styles.teamCell} ${styles.teamVisitante}`}>
                       {getFlagUrl(partido.visitante) && (
-                        <img
-                          src={getFlagUrl(partido.visitante)!}
-                          className={styles.flag}
-                        />
+                        <img src={getFlagUrl(partido.visitante)!} className={styles.flag} />
                       )}
                       <span>{partido.visitante}</span>
                     </div>
                   </td>
-
                   <td>
-                    <span
-                      className={`${styles.statusBadge} ${getStatusClass(
-                        partido.status
-                      )}`}
-                    >
+                    <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
                       {partido.status}
                     </span>
                   </td>
@@ -278,12 +269,9 @@ export default function Partidos({ partidos }: PartidosProps) {
 
       {/* ================= MÓVIL (CARDS) ================= */}
       {isMobile && (
-        <div key={jornadaSeleccionada}
-           className={`${styles.mobileList} ${styles.fadeIn}`}>
+        <div key={jornadaSeleccionada} className={`${styles.mobileList} ${styles.fadeIn}`}>
           {partidosFiltrados.map(partido => (
             <div key={partido.id} className={styles.mobileCard}>
-
-              {/* Jornada */}
               <div className={styles.mobileJornada}>
                 Jornada {partido.jornada}
               </div>
@@ -291,10 +279,7 @@ export default function Partidos({ partidos }: PartidosProps) {
               <div className={styles.mobileTeams}>
                 <div className={styles.mobileTeam}>
                   {getFlagUrl(partido.local) && (
-                    <img
-                      src={getFlagUrl(partido.local)!}
-                      className={styles.flag}
-                    />
+                    <img src={getFlagUrl(partido.local)!} className={styles.flag} />
                   )}
                   <span>{partido.local}</span>
                 </div>
@@ -305,21 +290,14 @@ export default function Partidos({ partidos }: PartidosProps) {
 
                 <div className={styles.mobileTeam}>
                   {getFlagUrl(partido.visitante) && (
-                    <img
-                      src={getFlagUrl(partido.visitante)!}
-                      className={styles.flag}
-                    />
+                    <img src={getFlagUrl(partido.visitante)!} className={styles.flag} />
                   )}
                   <span>{partido.visitante}</span>
                 </div>
               </div>
 
               <div className={styles.mobileStatus}>
-                <span
-                  className={`${styles.statusBadge} ${getStatusClass(
-                    partido.status
-                  )}`}
-                >
+                <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
                   {partido.status}
                 </span>
               </div>
