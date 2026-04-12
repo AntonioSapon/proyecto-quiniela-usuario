@@ -86,6 +86,9 @@ const rawCountryCodeMap: Record<string, string> = {
   'eslovenia': 'si',
   'finlandia': 'fi',
   'islandia': 'is',
+  'R. Checa': 'cz',
+  'Bosnia y H.': 'ba',
+
 
   // AFC
   'japon': 'jp',
@@ -114,6 +117,7 @@ const rawCountryCodeMap: Record<string, string> = {
   'mali': 'ml',
   'sudafrica': 'za',
   'jordania': 'jo',
+  'RD Congo': 'cd',
 
   // OFC
   'nueva zelanda': 'nz',
