@@ -10,7 +10,7 @@
   );
   position: relative;
   overflow: hidden;
-  padding-top: 140px;
+  padding-top: 40px; /* Para el navbar */
   padding-bottom: 120px;
 }
 

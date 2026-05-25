@@ -180,7 +180,7 @@
 
 .emptyState {
   text-align: center;
-  padding-top: 160px;
+  padding-top: 40px; /* Para el navbar */
   color: rgba(255, 255, 255, 0.6);
 }
 
