@@ -4,17 +4,35 @@ import { useEffect, useState } from "react";
 import styles from "./IntroAnimation.module.css";
 
 export default function IntroAnimation() {
+  const [showIntro, setShowIntro] = useState(false);
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
+    const alreadyShown = sessionStorage.getItem("introShown");
     const timer = setTimeout(() => {
       setHide(true);
     }, 2600);
 
+    if (!alreadyShown) {
+
+      // Mostrar intro
+      setShowIntro(true);
+
+      // Guardar que ya se mostró
+      sessionStorage.setItem("introShown", "true");
+
+      // Ocultarla después de la animación
+      const timer = setTimeout(() => {
+        setShowIntro(false);
+      }, 2400);
+
+      return () => clearTimeout(timer);
+    }
+
     return () => clearTimeout(timer);
   }, []);
 
-  if (hide) return null;
+  if (!showIntro) return null;
 
   return (
     <div className={styles.intro}>
