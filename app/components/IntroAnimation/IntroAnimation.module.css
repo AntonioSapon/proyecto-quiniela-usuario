@@ -12,6 +12,9 @@
 
   animation: fadeOut 0.8s ease forwards;
   animation-delay: 2s;
+
+  will-change: opacity, transform;
+  transform: translateZ(0);
 }
 
 /* ===================================================== */
@@ -53,22 +56,24 @@
 /* ===================================================== */
 
 .logo {
-  width: 320px;
+  width: 420px;
   height: auto;
 
-  opacity: 0;
+  object-fit: contain;
+
+  animation: logoZoomSmooth 3.1s ease-out forwards;
+
+  will-change: transform, opacity;
+
+  transform: translateZ(0);
+
+  backface-visibility: hidden;
 
   filter:
-    drop-shadow(0 0 20px rgba(255, 218, 121, 0.2))
-    drop-shadow(0 0 40px rgba(255, 218, 121, 0.15));
+    drop-shadow(0 0 18px rgba(255, 215, 0, 0.18))
+    drop-shadow(0 0 40px rgba(255, 215, 0, 0.08));
 
-  animation:
-    logoAppear 0.8s ease forwards,
-    logoZoom 2.2s ease forwards;
-
-  animation-delay:
-    0.2s,
-    0.6s;
+  transition: opacity 0.3s ease;
 }
 
 /* ===================================================== */
@@ -116,17 +121,36 @@
   }
 }
 
-@keyframes logoZoom {
+@keyframes logoZoomSmooth {
+
   0% {
-    transform: scale(1);
+    transform: scale(0.9);
+    opacity: 0;
   }
 
-  70% {
-    transform: scale(1.15);
+  10% {
+    opacity: 1;
+  }
+
+  35% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.75;
+  }
+
+  65% {
+    opacity: 0.45;
+  }
+
+  80% {
+    opacity: 0.18;
   }
 
   100% {
-    transform: scale(11);
+    transform: scale(4);
     opacity: 0;
   }
 }

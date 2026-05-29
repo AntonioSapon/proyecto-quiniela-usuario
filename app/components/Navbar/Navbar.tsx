@@ -32,6 +32,7 @@ export default function CustomNavbar() {
 
   // 👇 NUEVO: ocultar navbar al bajar
   const [hidden, setHidden] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   /* ===================================================== */
   /* ===== SCROLL EFFECT ================================= */
@@ -72,7 +73,8 @@ export default function CustomNavbar() {
 
   return (
     <BootstrapNavbar
-      expand="lg"
+      expand={false}
+      expanded={expanded}
       fixed="top"
       className={`
         ${styles.navbar}
@@ -101,6 +103,7 @@ export default function CustomNavbar() {
         <BootstrapNavbar.Toggle
           aria-controls="navbar-nav"
           className={styles.toggler}
+          onClick={() => setExpanded(!expanded)}
         />
 
         {/* ===================================================== */}
@@ -117,6 +120,7 @@ export default function CustomNavbar() {
             <Nav.Link
               as={Link}
               href="/"
+              onClick={() => setExpanded(false)}
               className={`${styles.navLink} ${
                 pathname === "/" ? styles.active : ""
               }`}
@@ -128,6 +132,7 @@ export default function CustomNavbar() {
             <Nav.Link
               as={Link}
               href="/Partidos"
+              onClick={() => setExpanded(false)}
               className={`${styles.navLink} ${
                 pathname === "/partidos" ? styles.active : ""
               }`}
@@ -139,6 +144,7 @@ export default function CustomNavbar() {
             <Nav.Link
               as={Link}
               href="/predicciones"
+              onClick={() => setExpanded(false)}
               className={`${styles.navLink} ${
                 pathname === "/predicciones"
                   ? styles.active
@@ -161,6 +167,7 @@ export default function CustomNavbar() {
               <Nav.Link
                 as={Link}
                 href="/components/auth/login"
+                onClick={() => setExpanded(false)}
                 className={`${styles.navLink} ${
                   pathname === "/components/auth/login"
                     ? styles.active

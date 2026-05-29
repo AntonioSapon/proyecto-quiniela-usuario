@@ -83,3 +83,38 @@ footer.footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
 }
+
+/* ===================================================== */
+/* ===== FIX BOOTSTRAP OVERRIDES ======================= */
+/* ===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  background: #0b0b0b !important;
+
+  color: white;
+}
+
+/* Bootstrap a veces rompe imágenes */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Evita estilos raros en links */
+a {
+  text-decoration: none !important;
+}
+
+/* Evita que Bootstrap meta fondos blancos */
+body,
+#__next {
+  background-color: #0b0b0b !important;
+}

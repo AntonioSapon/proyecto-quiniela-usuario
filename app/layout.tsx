@@ -5,6 +5,7 @@ import StoreProvider from "./StoreProvider";
 import CustomNavbar from "./components/Navbar/Navbar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
