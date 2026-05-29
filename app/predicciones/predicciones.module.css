@@ -43,14 +43,14 @@
 /* ===== FONDO GENERAL (IGUAL A INICIO / PARTIDOS) ===== */
 /* ===================================================== */
 
-:global(body) {
+/*:global(body) {
   background: radial-gradient(
     circle at top,
     #1a1a1a 0%,
     #121212 40%,
     #0b0b0b 100%
   );
-}
+}*/
 
 /* ===================================================== */
 /* ===== HEADER ESTILO INICIO =========================== */
