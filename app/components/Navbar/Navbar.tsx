@@ -9,8 +9,6 @@ import {
 } from "react-bootstrap";
 
 import { usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/Redux/store";
-import { logout } from "@/features/auth/authSlice";
 
 import styles from "./Navbar.module.css";
 import logo from "./WC-2026.png";
@@ -20,9 +18,6 @@ import { useEffect, useState } from "react";
 export default function CustomNavbar() {
   const pathname = usePathname();
   const router = useRouter();
-
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
 
   /* ===================================================== */
   /* ===== STATES ======================================== */
@@ -62,14 +57,6 @@ export default function CustomNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* ===================================================== */
-  /* ===== LOGOUT ======================================== */
-  /* ===================================================== */
-
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push("/");
-  };
 
   return (
     <BootstrapNavbar
@@ -154,29 +141,6 @@ export default function CustomNavbar() {
               Predicciones
             </Nav.Link>
 
-            {/* LOGIN / LOGOUT */}
-            {user ? (
-              <Nav.Link
-                as="button"
-                onClick={handleLogout}
-                className={styles.navLink}
-              >
-                Logout
-              </Nav.Link>
-            ) : (
-              <Nav.Link
-                as={Link}
-                href="/components/auth/login"
-                onClick={() => setExpanded(false)}
-                className={`${styles.navLink} ${
-                  pathname === "/components/auth/login"
-                    ? styles.active
-                    : ""
-                }`}
-              >
-                Login
-              </Nav.Link>
-            )}
           </Nav>
         </BootstrapNavbar.Collapse>
       </Container>
