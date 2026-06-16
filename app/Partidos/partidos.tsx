@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { useAppSelector } from '@/Redux/store'; // 👈 NUEVO
 import LoadingOverlay from '@/app/components/LoadingOverlay/LoadingOverlay'; // 👈 NUEVO
 import styles from './partidos.module.css';
+import React, { useState, useEffect } from 'react';
 
 /* ================= NORMALIZACIÓN ================= */
 const normalizeCountry = (name: string) =>
@@ -13,7 +13,7 @@ const normalizeCountry = (name: string) =>
 
 /* ================= TIPOS ================= */
 type Partido = {
-  id: string;
+  _id: string;
   jornada: number;
   local: string;
   visitante: string;
@@ -25,6 +25,13 @@ type Partido = {
 type PartidosProps = {
   partidos: Partido[];
   isAdmin?: boolean;
+};
+
+/* ================= TIPO PRONÓSTICO ================= */
+type PronosticoPartido = {
+  _id: string;
+  participante: string;
+  prediccion: string;
 };
 
 /* ================= MAPEO PAÍS → ISO ================= */
@@ -135,6 +142,8 @@ const getFlagUrl = (country: string) => {
   return code ? `https://flagcdn.com/w40/${code}.png` : null;
 };
 
+
+
 /* ================= COMPONENTE ================= */
 export default function Partidos({ partidos }: PartidosProps) {
 
@@ -145,6 +154,18 @@ export default function Partidos({ partidos }: PartidosProps) {
     useState<number | 'todas'>('todas');
   const [jornadasDisponibles, setJornadasDisponibles] = useState<number[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+
+  /* ================= PRONÓSTICOS ================= */
+
+// Partido actualmente expandido
+const [partidoExpandido, setPartidoExpandido] = useState<string | null>(null);
+
+// Pronósticos del partido seleccionado
+const [pronosticos, setPronosticos] = useState<PronosticoPartido[]>([]);
+
+// Loading independiente
+const [loadingPronosticos, setLoadingPronosticos] = useState(false);
+
 
   /* Detectar tamaño de pantalla */
   useEffect(() => {
@@ -181,6 +202,35 @@ export default function Partidos({ partidos }: PartidosProps) {
     }
   };
 
+  /* ================= OBTENER PRONÓSTICOS ================= */
+const handleMostrarPronosticos = async (partidoId: string) => {
+
+  // Si ya está abierto lo cerramos
+  if (partidoExpandido === partidoId) {
+    setPartidoExpandido(null);
+    setPronosticos([]);
+    return;
+  }
+
+  try {
+    setLoadingPronosticos(true);
+
+    const response = await fetch(
+      `https://proyecto-quiniela-backend.onrender.com/api/partidos/${partidoId}/pronosticos`
+    );
+
+    const data = await response.json();
+
+    setPronosticos(data);
+    setPartidoExpandido(partidoId);
+
+  } catch (error) {
+    console.error('Error obteniendo pronósticos:', error);
+  } finally {
+    setLoadingPronosticos(false);
+  }
+};
+
   // ❗ Estado vacío SOLO si ya terminó de cargar
   if (!loading && (!partidos || partidos.length === 0)) {
     return (
@@ -189,7 +239,8 @@ export default function Partidos({ partidos }: PartidosProps) {
       </div>
     );
   }
-
+console.log(partidosFiltrados);
+console.log(partidosFiltrados[0]);
   return (
     <div className={`${styles.mainContainer} position-relative`}>
 
@@ -238,7 +289,11 @@ export default function Partidos({ partidos }: PartidosProps) {
             </thead>
             <tbody>
               {partidosFiltrados.map(partido => (
-                <tr key={partido.id}>
+                <React.Fragment key={partido._id}>
+                  <tr
+                    onClick={() => handleMostrarPronosticos(partido._id)}
+                    style={{ cursor: 'pointer' }}
+                  >
                   <td className={styles.jornadaCol}>{partido.jornada}</td>
                   <td>
                     <div className={`${styles.teamCell} ${styles.teamLocal}`}>
@@ -259,14 +314,99 @@ export default function Partidos({ partidos }: PartidosProps) {
                       <span>{partido.visitante}</span>
                     </div>
                   </td>
+                  
                   <td>
-                    <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
-                      {partido.status}
-                    </span>
-                  </td>
-                </tr>
+                        <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
+                          {partido.status}
+                        </span>
+                      </td>
+
+                      </tr>
+
+                      {partidoExpandido === partido._id && (
+                        <tr>
+                          <td colSpan={5}>
+                            <div
+                              style={{
+                                background: 'rgba(37, 37, 34, 0.8)',
+                                padding: '15px',
+                                borderRadius: '15px',
+                                width: '100%',
+                                maxWidth: '1000px',
+                                justifyContent: 'center',
+                                margin: 'auto',
+                                textAlign: 'center'
+                              }}
+                            >
+                            <h5 style={{ 
+                              borderBottom: '2px solid rgba(255, 195, 0, 0.6)', 
+                              padding: '5px 0', 
+                              color: 'rgba(255, 195, 0)' 
+                              }}>Pronósticos</h5> 
+                              <br/>
+
+                              {loadingPronosticos ? (
+                                <p>Cargando...</p>
+                              ) : pronosticos.length === 0 ? (
+                                <p>No hay pronósticos registrados.</p>
+                              ) : (
+
+                              <div
+                                  style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                    gap: '12px',
+                                    marginTop: '10px'
+                                  }}
+                                >
+                                  {pronosticos.map((p) => (
+                                    <div
+                                      key={p._id}
+                                      style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '1fr auto',
+                                        alignItems: 'center',
+                                        padding: '10px 14px',
+                                        borderBottom: '1.5px solid rgba(255, 195, 0,0.2)',
+                                        borderRadius: '20px',
+                                        border: '1.5px solid rgba(255, 195, 0,0.25)',
+                                        background: 'rgba(22, 22, 21, 0.6)',
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          textAlign: 'left',
+                                          
+                                        }}
+                                      >
+                                        {p.participante}
+                                      </span>
+
+                                      <strong style={{
+                                        background: 'rgba(255, 196, 0, 0.12)',
+                                        padding: '3px 10px',
+                                        border: '1.5px solid rgba(255, 195, 0,0.25)',
+                                        borderRadius: '12px',
+                                        color: 'rgba(255, 195, 0)'
+                                      }}>
+                                        {p.prediccion}
+                                      </strong>
+                                    </div>
+                                  ))}
+                                </div>
+
+
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+
+                      </React.Fragment>
+
               ))}
             </tbody>
+            
           </table>
         </div>
       )}
@@ -275,7 +415,13 @@ export default function Partidos({ partidos }: PartidosProps) {
       {isMobile && (
         <div key={jornadaSeleccionada} className={`${styles.mobileList} ${styles.fadeIn}`}>
           {partidosFiltrados.map(partido => (
-            <div key={partido.id} className={styles.mobileCard}>
+
+            <div
+                key={partido._id}
+                className={styles.mobileCard}
+                onClick={() => handleMostrarPronosticos(partido._id)}
+              >
+
               <div className={styles.mobileJornada}>
                 Jornada {partido.jornada}
               </div>
@@ -301,11 +447,73 @@ export default function Partidos({ partidos }: PartidosProps) {
               </div>
 
               <div className={styles.mobileStatus}>
-                <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
-                  {partido.status}
-                </span>
-              </div>
-            </div>
+                  <span className={`${styles.statusBadge} ${getStatusClass(partido.status)}`}>
+                    {partido.status}
+                  </span>
+                </div>
+
+
+                {partidoExpandido === partido._id && (
+<div
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    marginTop: '12px'
+  }}
+>
+
+<h5 style={{ 
+                              borderBottom: '2px solid rgba(255, 195, 0, 0.6)', 
+                              padding: '5px 0', 
+                              color: 'rgba(255, 195, 0)' ,
+                              textAlign: 'center',
+                              }}>Pronósticos</h5> 
+                              
+
+  {pronosticos.map((p) => (
+    <div
+      key={p._id}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr auto',
+        alignItems: 'center',
+        padding: '10px 14px',
+        borderRadius: '16px',
+        border: '1.5px solid rgba(255, 195, 0, 0.25)',
+        background: 'rgba(22, 22, 21, 0.6)'
+      }}
+    >
+      <span
+        style={{
+          textAlign: 'left',
+          fontSize: '14px'
+        }}
+      >
+        {p.participante}
+      </span>
+
+      <strong
+        style={{
+          background: 'rgba(255, 196, 0, 0.12)',
+          padding: '3px 10px',
+          border: '1.5px solid rgba(255, 195, 0, 0.25)',
+          borderRadius: '12px',
+          color: 'rgba(255, 195, 0)'
+        }}
+      >
+        {p.prediccion}
+      </strong>
+    </div>
+  ))}
+</div>
+
+
+                    )}
+                  </div>
+            
+
+            
           ))}
         </div>
       )}

@@ -76,3 +76,20 @@ export const deletePartido = async (id: string) => {
     throw error;
   }
 };
+
+export const fetchPronosticosPartido = async (partidoId: string) => {
+  try {
+    const response = await fetch(
+      `https://proyecto-quiniela-backend.onrender.com/api/partidos/${partidoId}/pronosticos`
+    );
+
+    if (!response.ok) {
+      throw new Error('Error al obtener pronósticos');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching pronósticos:', error);
+    throw error;
+  }
+};

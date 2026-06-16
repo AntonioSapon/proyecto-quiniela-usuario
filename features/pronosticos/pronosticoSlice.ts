@@ -82,5 +82,6 @@ const pronosticoSlice = createSlice({
     }
 });
 
+
 export const { resetPronosticos } = pronosticoSlice.actions;
 export default pronosticoSlice.reducer;
