@@ -32,6 +32,8 @@ type PronosticoPartido = {
   _id: string;
   participante: string;
   prediccion: string;
+  puntosObtenidos: number;
+  tipoAcierto: 'exacto' | 'ganador/empate' | 'none';
 };
 
 /* ================= MAPEO PAÍS → ISO ================= */
@@ -151,7 +153,7 @@ export default function Partidos({ partidos }: PartidosProps) {
   const { loading } = useAppSelector((state) => state.partidos);
 
   const [jornadaSeleccionada, setJornadaSeleccionada] =
-    useState<number | 'todas'>('todas');
+    useState<number | 'todas'>(3); // Por defecto, mostrar la jornada 3
   const [jornadasDisponibles, setJornadasDisponibles] = useState<number[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -239,9 +241,9 @@ const handleMostrarPronosticos = async (partidoId: string) => {
       </div>
     );
   }
-console.log(partidosFiltrados);
-console.log(partidosFiltrados[0]);
+
   return (
+    
     <div className={`${styles.mainContainer} position-relative`}>
 
       {/* 🔥 LOADING OVERLAY */}
@@ -322,7 +324,7 @@ console.log(partidosFiltrados[0]);
                       </td>
 
                       </tr>
-
+                      
                       {partidoExpandido === partido._id && (
                         <tr>
                           <td colSpan={5}>
@@ -351,48 +353,82 @@ console.log(partidosFiltrados[0]);
                                 <p>No hay pronósticos registrados.</p>
                               ) : (
 
-                              <div
-                                  style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                                    gap: '12px',
-                                    marginTop: '10px'
-                                  }}
-                                >
-                                  {pronosticos.map((p) => (
-                                    <div
-                                      key={p._id}
-                                      style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: '1fr auto',
-                                        alignItems: 'center',
-                                        padding: '10px 14px',
-                                        borderBottom: '1.5px solid rgba(255, 195, 0,0.2)',
-                                        borderRadius: '20px',
-                                        border: '1.5px solid rgba(255, 195, 0,0.25)',
-                                        background: 'rgba(22, 22, 21, 0.6)',
-                                      }}
-                                    >
-                                      <span
+                            //Estructura de grid para mostrar los pronósticos en 4 columnas
+                                <div
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                      gap: '12px',
+                                      marginTop: '10px'
+                                    }}
+                                  >
+                                  {pronosticos.map((p) => {
+                                                                        
+const partidoFinalizado = partido.status === 'finalizado';
+
+const borderColor =
+  !partidoFinalizado
+    ? 'rgba(255, 215, 0, 0.55)' // amarillo para partidos pendientes
+    : p.tipoAcierto === 'exacto'
+    ? 'rgba(41, 219, 107, 0.60)' // verde suave
+    : p.tipoAcierto === 'none'
+    ? 'rgba(220, 38, 38, 0.50)' // rojo suave
+    : 'rgba(255, 215, 0, 0.50)'; // amarillo para ganador/empate
+
+const badgeColor =
+  !partidoFinalizado
+    ? '#ffd700'
+    : p.tipoAcierto === 'exacto'
+    ? '#49be74'
+    : p.tipoAcierto === 'none'
+    ? '#a83838'
+    : '#ffd700';
+
+const badgeBackground =
+  !partidoFinalizado
+    ? 'rgba(255, 215, 0, 0.18)'
+    : p.tipoAcierto === 'exacto'
+    ? 'rgba(34, 197, 94, 0.12)'
+    : p.tipoAcierto === 'none'
+    ? 'rgba(220, 38, 38, 0.12)'
+    : 'rgba(255, 215, 0, 0.18)';
+
+                                    return (
+                                      <div
+                                        key={p._id}
                                         style={{
-                                          textAlign: 'left',
-                                          
+                                          display: 'grid',
+                                          gridTemplateColumns: '1fr auto',
+                                          alignItems: 'center',
+                                          padding: '10px 14px',
+                                          borderBottom: `1.5px solid ${borderColor}`,
+                                          borderRadius: '20px',
+                                          border: `1.5px solid ${borderColor}`,
+                                          background: 'rgba(22, 22, 21, 0.6)',
                                         }}
                                       >
-                                        {p.participante}
-                                      </span>
+                                        <span
+                                          style={{
+                                            textAlign: 'left',
+                                          }}
+                                        >
+                                          {p.participante}
+                                        </span>
 
-                                      <strong style={{
-                                        background: 'rgba(255, 196, 0, 0.12)',
-                                        padding: '3px 10px',
-                                        border: '1.5px solid rgba(255, 195, 0,0.25)',
-                                        borderRadius: '12px',
-                                        color: 'rgba(255, 195, 0)'
-                                      }}>
-                                        {p.prediccion}
-                                      </strong>
-                                    </div>
-                                  ))}
+                                        <strong
+                                          style={{
+                                            background: badgeBackground,
+                                            padding: '3px 10px',
+                                            border: `1.5px solid ${borderColor}`,
+                                            borderRadius: '12px',
+                                            color: badgeColor
+                                          }}
+                                        >
+                                          {p.prediccion}
+                                        </strong>
+                                      </div>
+                                    );
+                                  })}
                                 </div>
 
 
@@ -453,60 +489,93 @@ console.log(partidosFiltrados[0]);
                 </div>
 
 
-                {partidoExpandido === partido._id && (
-<div
-  style={{
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    marginTop: '12px'
-  }}
->
-
-<h5 style={{ 
-                              borderBottom: '2px solid rgba(255, 195, 0, 0.6)', 
-                              padding: '5px 0', 
-                              color: 'rgba(255, 195, 0)' ,
-                              textAlign: 'center',
-                              }}>Pronósticos</h5> 
-                              
-
-  {pronosticos.map((p) => (
-    <div
-      key={p._id}
+{partidoExpandido === partido._id && (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      marginTop: '12px'
+    }}
+  >
+    <h5
       style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        alignItems: 'center',
-        padding: '10px 14px',
-        borderRadius: '16px',
-        border: '1.5px solid rgba(255, 195, 0, 0.25)',
-        background: 'rgba(22, 22, 21, 0.6)'
+        borderBottom: '2px solid rgba(255, 195, 0, 0.6)',
+        padding: '5px 0',
+        color: 'rgba(255, 195, 0)',
+        textAlign: 'center'
       }}
     >
-      <span
-        style={{
-          textAlign: 'left',
-          fontSize: '14px'
-        }}
-      >
-        {p.participante}
-      </span>
+      Pronósticos
+    </h5>
 
-      <strong
-        style={{
-          background: 'rgba(255, 196, 0, 0.12)',
-          padding: '3px 10px',
-          border: '1.5px solid rgba(255, 195, 0, 0.25)',
-          borderRadius: '12px',
-          color: 'rgba(255, 195, 0)'
-        }}
-      >
-        {p.prediccion}
-      </strong>
-    </div>
-  ))}
-</div>
+    {pronosticos.map((p) => {
+      const partidoFinalizado = partido.status === 'finalizado';
+
+      const borderColor =
+        !partidoFinalizado
+          ? 'rgba(255, 215, 0, 0.55)'
+          : p.tipoAcierto === 'exacto'
+          ? 'rgba(34, 197, 94, 0.42)'
+          : p.tipoAcierto === 'none'
+          ? 'rgba(220, 38, 38, 0.42)'
+          : 'rgba(255, 215, 0, 0.55)';
+
+      const badgeColor =
+        !partidoFinalizado
+          ? '#ffd700'
+          : p.tipoAcierto === 'exacto'
+          ? '#4ade80'
+          : p.tipoAcierto === 'none'
+          ? '#f87171'
+          : '#ffd700';
+
+      const badgeBackground =
+        !partidoFinalizado
+          ? 'rgba(255, 215, 0, 0.18)'
+          : p.tipoAcierto === 'exacto'
+          ? 'rgba(34, 197, 94, 0.12)'
+          : p.tipoAcierto === 'none'
+          ? 'rgba(220, 38, 38, 0.12)'
+          : 'rgba(255, 215, 0, 0.18)';
+
+      return (
+        <div
+          key={p._id}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
+            alignItems: 'center',
+            padding: '10px 14px',
+            borderRadius: '16px',
+            border: `1.5px solid ${borderColor}`,
+            background: 'rgba(22, 22, 21, 0.6)'
+          }}
+        >
+          <span
+            style={{
+              textAlign: 'left',
+              fontSize: '14px'
+            }}
+          >
+            {p.participante}
+          </span>
+
+          <strong
+            style={{
+              background: badgeBackground,
+              padding: '3px 10px',
+              border: `1.5px solid ${borderColor}`,
+              borderRadius: '12px',
+              color: badgeColor
+            }}
+          >
+            {p.prediccion}
+          </strong>
+        </div>
+      );
+    })}
+  </div>
 
 
                     )}
