@@ -153,7 +153,7 @@ export default function Partidos({ partidos }: PartidosProps) {
   const { loading } = useAppSelector((state) => state.partidos);
 
   const [jornadaSeleccionada, setJornadaSeleccionada] =
-    useState<number | 'todas'>(3); // Por defecto, mostrar la jornada 3
+    useState<number | 'todas'>(4); // Por defecto, mostrar la jornada 3
   const [jornadasDisponibles, setJornadasDisponibles] = useState<number[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
